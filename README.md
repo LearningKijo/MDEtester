@@ -7,7 +7,7 @@ MDE Tester is designed to help testing Web Protection-related components in Micr
 ### Prerequisites
 - CSV file (to test [URL Indicators](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/indicator-ip-domain?view=o365-worldwide), Microsoft Defender for Endpoint)
 > [!Important]
-> The CSV file column header must be ***'IndicatorValue'***. Here is an example.
+> The CSV file column header must be ***'IndicatorValue'***. Here is [an example](https://github.com/LearningKijo/MDEtester/blob/main/Tools/Sample.csv).
 
 `MDE-Tester.ps1` assumes that the following items are installed, enabled and onboared.
 - Install Google Chrome & Microsoft Edge
