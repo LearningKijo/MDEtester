@@ -5,7 +5,7 @@ MDE Tester is designed to help testing Web Protection-related components in Micr
 - [x] Microsoft Defender for Endpoint, URL Indicators
 
 ### Prerequisites
-- CSV file (to test [URL Indicators](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/indicator-ip-domain?view=o365-worldwide), Microsoft Defender for Endpoint)
+- CSV file (To test URL Indicators, Microsoft Defender for Endpoint)
 > [!Important]
 > The CSV file column header must be ***'IndicatorValue'***. Here is [an example](https://github.com/LearningKijo/MDEtester/blob/main/Tools/Sample.csv).
 
