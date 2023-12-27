@@ -1,5 +1,7 @@
 # MDE Tester
 MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint. 
+
+`MDEtesterIoC.ps1` is intended to assist in testing the following features: 
 - [x] Microsoft Defender SmartScreen
 - [x] Microsoft Defender Exploit Guard, Network Protection
 - [x] Microsoft Defender for Endpoint, URL Indicators
