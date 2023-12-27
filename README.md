@@ -1,5 +1,5 @@
 # MDE Tester
-MDE Tester is designed to help testing Web Protection-related components in Microsoft Defender for Endpoint. 
+MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint. 
 - [x] Microsoft Defender SmartScreen
 - [x] Microsoft Defender Exploit Guard, Network Protection
 - [x] Microsoft Defender for Endpoint, URL Indicators
@@ -9,7 +9,7 @@ MDE Tester is designed to help testing Web Protection-related components in Micr
 > [!Important]
 > The CSV file column header must be ***'IndicatorValue'***. Here is [an example](https://github.com/LearningKijo/MDEtester/blob/main/Tools/Sample.csv).
 
-`MDE-Tester.ps1` assumes that the following items are installed, enabled and onboared.
+`MDEtesterIoC.ps1` assumes that the following items are installed, enabled and onboared.
 - Install Google Chrome & Microsoft Edge
 - Enable [Microsoft Defender SmartScreen](https://learn.microsoft.com/en-us/windows/security/operating-system-security/virus-and-threat-protection/microsoft-defender-smartscreen/)
 - Enable [Microsoft Defender Exploit Guard, Network Protection](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
@@ -19,20 +19,20 @@ MDE Tester is designed to help testing Web Protection-related components in Micr
 ## Usage
 
 ```powershell
-PS C:\> .\MDE-Tester.ps1 -Path <CSV File path>
+PS C:\> .\MDEtesterIoC.ps1 -Path <CSV File path>
 ```
 ```powershell
-PS C:\> .\MDE-Tester.ps1 -Path "C:\temp\Sample.csv"
+PS C:\> .\MDEtesterIoC.ps1 -Path "C:\temp\Sample.csv"
 ```
 
 > [!Important]
 > #### Parameter
 >```
->-Path <String> : This is a mandatory parameter to specify a CSV file and is used for testing MDE URL indicators.
+> -Path <String> : This is a mandatory parameter to specify a CSV file and is used for testing MDE URL indicators.
 >```
 
 ## LOG
-After you run `MDE-Tester.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
+After you run `MDEtesterIoC.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
 
 #### Disclaimer
 The views and opinions expressed herein are those of the author and do not necessarily reflect the views of company.
