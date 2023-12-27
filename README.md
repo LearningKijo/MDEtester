@@ -18,7 +18,6 @@ MDE Tester is designed to help testing Web Protection-related components in Micr
 
 ## Usage
 
-
 ```powershell
 PS C:\> .\MDE-Tester.ps1 -Path <CSV File path>
 ```
@@ -31,6 +30,9 @@ PS C:\> .\MDE-Tester.ps1 -Path "C:\temp\Sample.csv"
 >```
 >-Path <String> : This is a mandatory parameter to specify a CSV file and is used for testing MDE URL indicators.
 >```
+
+## LOG
+After you run `MDE-Tester.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
 
 #### Disclaimer
 The views and opinions expressed herein are those of the author and do not necessarily reflect the views of company.
