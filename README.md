@@ -6,8 +6,8 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 - [x] Microsoft Defender Exploit Guard, Network Protection
 - [x] Microsoft Defender for Endpoint, URL Indicators
 
-### Prerequisites
-- CSV file (To test URL Indicators, Microsoft Defender for Endpoint)
+## Prerequisites
+- You need ***"a CSV file"*** that lists URLs to test URL Indicators in Microsoft Defender for Endpoint.
 > [!Important]
 > The CSV file column header must be ***'IndicatorValue'***. Here is [an example](https://github.com/LearningKijo/MDEtester/blob/main/Tools/Sample.csv).
 
