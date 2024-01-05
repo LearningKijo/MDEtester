@@ -27,7 +27,10 @@ PS C:\> .\MDEtesterIoC.ps1 -Path <CSV File path>
 PS C:\> .\MDEtesterIoC.ps1 -Path "C:\temp\Sample.csv"
 ```
 
-> [!Important]
+> [!Important]]
+> #### Signing
+> If your PowerShell execution policy is set to RemoteSigned, PowerShell will not run unsigned scripts downloaded from the internet. Therefore, please unblock the script using the cmdlet or through Properties. <br>
+> Details - [Running unsigned scripts using the RemoteSigned execution policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_signing?view=powershell-7.4#running-unsigned-scripts-using-the-remotesigned-execution-policy)
 > #### Parameter
 >```
 > -Path <String> : This is a mandatory parameter to specify a CSV file and is used for testing MDE URL indicators.
