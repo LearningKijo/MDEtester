@@ -28,7 +28,8 @@ PS C:\> .\MDEtesterIoC.ps1 -Path "C:\temp\Sample.csv"
 ```
 
 > [!Important]
-> #### Signing
+> **Signing**
+> 
 > If your PowerShell execution policy is set to RemoteSigned, PowerShell will not run unsigned scripts downloaded from the internet. Therefore, please unblock the script using the cmdlet or through Properties. <br>
 > - [Running unsigned scripts using the RemoteSigned execution policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_signing?view=powershell-7.4#running-unsigned-scripts-using-the-remotesigned-execution-policy)
 #### Parameter
