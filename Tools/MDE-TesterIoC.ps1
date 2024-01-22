@@ -1,9 +1,10 @@
-﻿param (
+﻿# Parameter
+param (
     [Parameter(Mandatory=$true)]
     [string]$Path
 ) 
 
-# Create the MDE-tester directory if it doesn't exist
+# Create MDE-tester directory if it doesn't exist
 $testerDirectory = "C:\MDE-tester"
 if (-not (Test-Path $testerDirectory -PathType Container)) {
     New-Item -Path $testerDirectory -ItemType Directory
@@ -33,7 +34,7 @@ Write-Host "██║░╚═╝░██║██████╔╝███�
 Write-Host "╚═╝░░░░░╚═╝╚═════╝░╚══════╝  ░░░╚═╝░░░╚══════╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝"
 Write-Host ""
 Write-Host "                         By Kijo Ninja (@kj_ninja25)"
-Write-Host "                              Version : 1.0.0"
+Write-Host "                              Version : 0.0.1"
 
 # : MDE Tester introduction 
 $intro = @"
@@ -96,9 +97,9 @@ if ($SmartScreenEnabledPathExists) {
 
     # Display messages based on the Edge SmartScreenEnabled status
     if ($SSvalue -eq 1) {
-        Write-Host "[3] Microsoft Defender SmartScreen  : [OK] Enabled" -ForegroundColor Green
+        Write-Host "[3] Microsoft Defender SmartScreen  : [OK] Enabled`n" -ForegroundColor Green
     } else {
-        Write-Host "[3] Microsoft Defender SmartScreen  : [NO] Disabled" -ForegroundColor Red
+        Write-Host "[3] Microsoft Defender SmartScreen  : [NO] Disabled`n" -ForegroundColor Red
         $SmartScreenDisabled = $true
     }
 } else {
@@ -106,7 +107,27 @@ if ($SmartScreenEnabledPathExists) {
     Write-Host "[W] Microsoft Defender SmartScreen  : [NO] Path not found or inaccessible." -ForegroundColor Yellow
     Write-Host ""
     Write-Host "If the device was not managed by GPO or Intune, the registry key path won't be found by this script." -ForegroundColor Yellow
-    Write-Host "In order to make sure Edge Defender SmartScreen is enabled, please check Edge browser settings." -ForegroundColor Yellow
+    Write-Host "In order to make sure Edge Defender SmartScreen is enabled, please check Edge browser settings.`n" -ForegroundColor Yellow
+}
+
+# AV version
+# Get Windows Defender Real-Time Protection status
+$defenderStatus = Get-MpComputerStatus
+
+# Display the Real-Time Protection status
+Write-Host "--- Microsoft Defender Antivirus ---"
+Write-Host "[4] Antivirus Engine Version        : $($defenderStatus.AMEngineVersion )" -ForegroundColor Green
+Write-Host "[5] Antivirus Product Version       : $($defenderStatus.AMProductVersion)" -ForegroundColor Green
+try {
+    if ($defenderStatus.RealTimeProtectionEnabled -eq $true) {
+        Write-Host "[6] Real-Time Protection Enabled    : [OK] $($defenderStatus.RealTimeProtectionEnabled)" -ForegroundColor Green
+    } else {
+        Write-Host "[6] Real-Time Protection Enabled    : [NO] $($defenderStatus.RealTimeProtectionEnabled)" -ForegroundColor Red
+        $RealTimeProtectionDisabled = $true
+    }
+} catch [System.Exception] {
+    Write-Host "[E] Real-Time Protection Enabled    : [NO] The status is unknown." -ForegroundColor Red
+    $RealTimeProtectionDisabled = $true
 }
 
 Write-Host ""
@@ -118,6 +139,10 @@ if ($MDENotRunning) {
     Exit
 } elseif ($NPDisabled -and $SmartScreenDisabled) {
     Write-Host "[Action] Enabling Network Protection or SmartScreen is a prerequisite to run this script."
+    Write-Host "--- END ---"
+    Exit
+} elseif ($RealTimeProtectionDisabled) {
+    Write-Host "[Action] Enabling Defender Antivirus - Real-Time Protection is a prerequisite to run this script."
     Write-Host "--- END ---"
     Exit
 }
