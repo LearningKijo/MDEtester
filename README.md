@@ -13,6 +13,7 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 
 `MDEtesterIoC.ps1` assumes that the following items are installed, enabled and onboared.
 - Install Google Chrome & Microsoft Edge
+- Enable [Real-Time protection](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-microsoft-defender-antivirus-features?view=o365-worldwide), Microsoft Defender Antivirus
 - Enable [Microsoft Defender SmartScreen](https://learn.microsoft.com/en-us/windows/security/operating-system-security/virus-and-threat-protection/microsoft-defender-smartscreen/)
 - Enable [Microsoft Defender Exploit Guard, Network Protection](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
 - Onboard [Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-endpoint?view=o365-worldwide) 
