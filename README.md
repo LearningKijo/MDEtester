@@ -1,4 +1,5 @@
 # MDE Tester
+
 MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint. 
 
 `MDEtesterIoC.ps1` is intended to assist in testing the following features: 
@@ -40,6 +41,9 @@ PS C:\> .\MDEtesterIoC.ps1 -Path "C:\temp\Sample.csv"
 
 ## LOG
 After you run `MDEtesterIoC.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
+
+## How it looks like
+![image](https://github.com/LearningKijo/MDEtester/assets/120234772/34deb2dd-8a9a-48e4-a2eb-dd52cf8ee57c)
 
 #### Disclaimer
 The views and opinions expressed herein are those of the author and do not necessarily reflect the views of company.
