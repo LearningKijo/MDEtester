@@ -52,6 +52,9 @@ PS C:\> .\MDEtesterWP.ps1 -Path <CSV File path> -Category <category>
 ```
 -Path <String> : This is an optional parameter. Please specify a CSV file path and it is used for testing MDE URL indicators.
 ```
+> [!Note]
+> The CSV file column header must be ***'IndicatorValue'***. Here is [an example](https://github.com/LearningKijo/MDEtester/blob/main/Tools/Sample.csv).
+
 ```
 -Category <String> :  This is an optional parameter. Please select a category you want to test and it is used for testing MDE WCF.
 
