@@ -54,10 +54,18 @@ PS C:\> .\MDEtesterWP.ps1 -Path <CSV File path> -Category <category>
 ```
 ```
 -Category <String> :  This is an optional parameter. Please select a category you want to test and it is used for testing MDE WCF.
+
+Here are available categories :
+PS C:\> .\MDEtesterWP.ps1 -Category AdultContent
+PS C:\> .\MDEtesterWP.ps1 -Category HighBandwidth
+PS C:\> .\MDEtesterWP.ps1 -Category LegalLiability
+PS C:\> .\MDEtesterWP.ps1 -Category Leisure
 ```
+> [!Note] 
+> In this MDE Tester script, WEC will be tested against high-level categories such as 'AdultContent,' 'HighBandwidth,' 'LegalLiability,' and 'Leisure.' Please note that some specific categories might not be covered, and the 'Uncategorized' category is not included in this script.
 
 ## LOG
-After you run `MDEtesterIoC.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
+After you run `MDEtesterWP.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
 
 ## How it looks like
 ![image](https://github.com/LearningKijo/MDEtester/assets/120234772/34deb2dd-8a9a-48e4-a2eb-dd52cf8ee57c)
