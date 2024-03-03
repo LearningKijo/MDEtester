@@ -2,13 +2,28 @@
 
 MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint. 
 
-`MDEtesterWP.ps1` is intended to assist in testing the following features: 
-- [x] Microsoft Defender SmartScreen
-- [x] Microsoft Defender Exploit Guard, Network Protection
-- [x] Microsoft Defender for Endpoint, URL Indicators
-- [x] Microsoft Defender for Endpoint, Web Content Filtering
+|  PS script   | Testing features |
+|:-------------|:-----------------|
+|`MDEtesterTP.ps1` | 1. Microsoft Defender for Endpoint, Tamper Protection |
+|`MDEtesterWP.ps1` | 1. Microsoft Defender SmartScreen <br> 2. Microsoft Defender Exploit Guard, Network Protection <br> 3. Microsoft Defender for Endpoint, URL Indicators <br> 4. Microsoft Defender for Endpoint, Web Content Filtering |
 
-## Prerequisites
+## MDEtesterTP.ps1
+### Prerequisites
+ `MDEtesterTP.ps1` helps confirm the status of Microsoft Defender for Endpoint, Tamper Protection. 
+ However, to test AV tampering in `MDEtesterTP.ps1`, enabling Tamper Protection is required.
+
+### Usage
+
+```
+PS C:\> .\MDEtesterTP.ps1 
+```
+
+### How it looks like
+![image](https://github.com/LearningKijo/MDEtester/assets/120234772/75119e8f-c994-4883-b7b4-8b76979d8584)
+
+
+## MDEtesterWP.ps1
+### Prerequisites
 
 `MDEtesterWP.ps1` assumes that the following items are installed, enabled and onboared.
 - Install Google Chrome & Microsoft Edge
@@ -17,7 +32,7 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 - Enable [Microsoft Defender Exploit Guard, Network Protection](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
 - Onboard [Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-endpoint?view=o365-worldwide) 
 
-## Usage
+### Usage
 
 ***Test 1***
 ```
@@ -48,7 +63,7 @@ PS C:\> .\MDEtesterWP.ps1 -Path <CSV File path> -Category <category>
 > 
 > If your PowerShell execution policy is set to RemoteSigned, PowerShell will not run unsigned scripts downloaded from the internet. Therefore, please unblock the script using the cmdlet or through Properties. <br>
 > - [Running unsigned scripts using the RemoteSigned execution policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_signing?view=powershell-7.4#running-unsigned-scripts-using-the-remotesigned-execution-policy)
-#### Parameter
+### Parameter
 ```
 -Path <String> : This is an optional parameter. Please specify a CSV file path and it is used for testing MDE URL indicators.
 ```
@@ -67,10 +82,10 @@ PS C:\> .\MDEtesterWP.ps1 -Category Leisure
 > [!Note] 
 > In this MDE Tester script, WEC will be tested against high-level categories such as 'AdultContent,' 'HighBandwidth,' 'LegalLiability,' and 'Leisure.' Please note that some specific categories might not be covered, and the 'Uncategorized' category is not included in this script.
 
-## LOG
+### LOG
 After you run `MDEtesterWP.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
 
-## How it looks like
+### How it looks like
 ![image](https://github.com/LearningKijo/MDEtester/assets/120234772/34deb2dd-8a9a-48e4-a2eb-dd52cf8ee57c)
 
 #### Disclaimer
