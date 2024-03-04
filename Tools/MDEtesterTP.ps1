@@ -112,7 +112,6 @@ function Get-AllAVValues {
         Write-Host "  [-] DisableBlockAtFirstSeen        : $($avValues.DisableBlockAtFirstSeen)"
         Write-Host "  [-] DisableRealtimeMonitoring      : $($avValues.DisableRealtimeMonitoring)"
         Write-Host "  [-] DisableBehaviorMonitoring      : $($avValues.DisableBehaviorMonitoring)"
-        Write-Host "  [-] DisableIOAVProtection          : $($avValues.DisableIOAVProtection)"
         Write-Host "  [-] MAPSReporting                  : $($avValues.MAPSReporting)"
         Write-Host "  [-] SharedSignaturesPath           : $($avValues.SharedSignaturesPath)"
         Write-Host "  [-] UnknownThreatDefaultAction     : $($avValues.UnknownThreatDefaultAction)"
@@ -166,26 +165,14 @@ function Set-BehaviorMonitoring {
     }
 }
 
-# Disable IOfficeAntivirus
-function Set-IOfficeAntivirus {
-    try {
-        Set-MpPreference -DisableIOAVProtection $true
-        Write-Host "  [4] Disable IOfficeAntivirus              : [OK] Disabled" -ForegroundColor Green
-        Write-Host '     [-] Set-MpPreference -DisableIOAVProtection $true'
-    } catch {
-        Write-Host "  [4] Disable IOfficeAntivirus              : [NO] Disabled" -ForegroundColor Red
-        Write-Host "  Error: $_" -ForegroundColor Red
-    }
-}
-
 # Disable cloud-delivered protection
 function Set-CloudDeliveredProtection {
     try {
         Set-MpPreference -MAPSReporting 0 
-        Write-Host "  [5] Disable cloud-delivered protection    : [OK] Disabled" -ForegroundColor Green
+        Write-Host "  [4] Disable cloud-delivered protection    : [OK] Disabled" -ForegroundColor Green
         Write-Host '     [-] Set-MpPreference -MAPSReporting 0 '
     } catch {
-        Write-Host "  [5] Disable cloud-delivered protection    : [NO] Disabled" -ForegroundColor Red
+        Write-Host "  [4] Disable cloud-delivered protection    : [NO] Disabled" -ForegroundColor Red
         Write-Host "  Error: $_" -ForegroundColor Red
     }
 }
@@ -194,10 +181,10 @@ function Set-CloudDeliveredProtection {
 function Set-SignatureUpdates {
     try {
         Set-MpPreference -SharedSignaturesPath "-"
-        Write-Host "  [6] Disable signature updates             : [OK] Disabled" -ForegroundColor Green
+        Write-Host "  [5] Disable signature updates             : [OK] Disabled" -ForegroundColor Green
         Write-Host '     [-] Set-MpPreference -SharedSignaturesPath "-"'
     } catch {
-        Write-Host "  [6] Disable signature updates             : [NO] Disabled" -ForegroundColor Red
+        Write-Host "  [5] Disable signature updates             : [NO] Disabled" -ForegroundColor Red
         Write-Host "  Error: $_" -ForegroundColor Red
     }
 }
@@ -206,14 +193,14 @@ function Set-SignatureUpdates {
 function Set-AutomaticActions {
     try {
         Set-MpPreference -UnknownThreatDefaultAction Allow -LowThreatDefaultAction Allow  -HighThreatDefaultAction Allow  -ModerateThreatDefaultAction Allow  -SevereThreatDefaultAction Allow
-        Write-Host "  [7] Automatic actions on detected threats : [OK] Disabled" -ForegroundColor Green
+        Write-Host "  [6] Automatic actions on detected threats : [OK] Disabled" -ForegroundColor Green
         Write-Host '     [-] Set-MpPreference -UnknownThreatDefaultAction Allow'
         Write-Host '     [-] Set-MpPreference -LowThreatDefaultAction Allow'
         Write-Host '     [-] Set-MpPreference -HighThreatDefaultAction Allow'
         Write-Host '     [-] Set-MpPreference -ModerateThreatDefaultAction Allow'
         Write-Host '     [-] Set-MpPreference -SevereThreatDefaultAction Allow'
     } catch {
-        Write-Host "  [7] Automatic actions on detected threats : [NO] Disabled" -ForegroundColor Red
+        Write-Host "  [6] Automatic actions on detected threats : [NO] Disabled" -ForegroundColor Red
         Write-Host "  Error: $_" -ForegroundColor Red
     }
 }
@@ -222,10 +209,10 @@ function Set-AutomaticActions {
 function Set-ArchivedFilesScanning {
     try {
         Set-MpPreference -DisableArchiveScanning $true
-        Write-Host "  [8] Archived files are scanned            : [OK] Disabled" -ForegroundColor Green
+        Write-Host "  [7] Archived files are scanned            : [OK] Disabled" -ForegroundColor Green
         Write-Host '     [-] Set-MpPreference -DisableArchiveScanning $true'
     } catch {
-        Write-Host "  [8] Archived files are scanned            : [NO] Disabled" -ForegroundColor Red
+        Write-Host "  [7] Archived files are scanned            : [NO] Disabled" -ForegroundColor Red
         Write-Host "  Error: $_`n" -ForegroundColor Red
     }
 }
@@ -234,12 +221,12 @@ function Set-ArchivedFilesScanning {
 function Set-ExclusionExtension {
     try {
         Set-MpPreference -ExclusionExtension "ps1" -ExclusionPath "C:\"
-        Write-Host "  [9] Exclusions cannot be modified or added: [OK] Disabled" -ForegroundColor Green
+        Write-Host "  [8] Exclusions cannot be modified or added: [OK] Disabled" -ForegroundColor Green
         Write-Host '     [-] Set-MpPreference -ExclusionExtension "ps1"'
         Write-Host '     [-] Set-MpPreference -ExclusionPath "C:\"'
         Write-Host ""
     } catch {
-        Write-Host "  [9] Exclusions cannot be modified or added: [NO] Disabled" -ForegroundColor Red
+        Write-Host "  [8] Exclusions cannot be modified or added: [NO] Disabled" -ForegroundColor Red
         Write-Host "  Error: $_`n" -ForegroundColor Red
     }
 }
@@ -261,7 +248,6 @@ if ($tpStatus -eq $true) {
         Set-VirusThreatProtection
         Set-RealTimeProtection
         Set-BehaviorMonitoring
-        Set-IOfficeAntivirus
         Set-CloudDeliveredProtection
         Set-SignatureUpdates 
         Set-AutomaticActions
