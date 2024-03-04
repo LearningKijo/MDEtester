@@ -9,8 +9,9 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 
 ## MDEtesterTP.ps1
 ### Prerequisites
- `MDEtesterTP.ps1` helps confirm the status of Microsoft Defender for Endpoint, Tamper Protection. 
+-  `MDEtesterTP.ps1` helps confirm the status of Microsoft Defender for Endpoint, Tamper Protection. 
  However, to test AV tampering in `MDEtesterTP.ps1`, enabling Tamper Protection is required.
+- Run  `MDEtesterTP.ps1` script as Administrator.
 
 ### Usage
 
@@ -19,8 +20,7 @@ PS C:\> .\MDEtesterTP.ps1
 ```
 
 ### How it looks like
-![image](https://github.com/LearningKijo/MDEtester/assets/120234772/75119e8f-c994-4883-b7b4-8b76979d8584)
-
+![image](https://github.com/LearningKijo/MDEtester/assets/120234772/a1f663e0-09fe-4fd1-a409-d76cece7c1a1)
 
 ## MDEtesterWP.ps1
 ### Prerequisites
