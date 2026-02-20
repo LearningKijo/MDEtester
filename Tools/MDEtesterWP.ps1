@@ -35,8 +35,8 @@ Write-Host "██║╚██╔╝██║██║░░██║██╔�
 Write-Host "██║░╚═╝░██║██████╔╝███████╗  ░░░██║░░░███████╗██████╔╝░░░██║░░░███████╗██║░░██║"
 Write-Host "╚═╝░░░░░╚═╝╚═════╝░╚══════╝  ░░░╚═╝░░░╚══════╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝"
 Write-Host ""
-Write-Host "                         By Kijo Ninja (@kj_ninja25)"
-Write-Host "                              Version : 2.0.1"
+Write-Host "                         By Kijo Ninja (@kj_ninja25)" -ForegroundColor Cyan
+Write-Host "                              Version : 4.0.0"
 
 # : MDE Tester introduction 
 $intro = @"
