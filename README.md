@@ -1,16 +1,10 @@
 # MDE Tester
 
-MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint. 
+MDE Tester is designed to help testing following features in Microsoft Defender for Endpoint. 
 
 |  PS script   | Testing features |
 |:-------------|:-----------------|
 |`MDEtesterWP.ps1` | 1. Microsoft Defender SmartScreen <br> 2. Microsoft Defender Exploit Guard, Network Protection <br> 3. Microsoft Defender for Endpoint, URL Indicators <br> 4. Microsoft Defender for Endpoint, Web Content Filtering |
-
-### How it looks like
-![image](https://github.com/LearningKijo/MDEtester/assets/120234772/a1f663e0-09fe-4fd1-a409-d76cece7c1a1)
-
-## MDEtesterWP.ps1
-### Prerequisites
 
 `MDEtesterWP.ps1` assumes that the following items are installed, enabled and onboared.
 - Install Google Chrome & Microsoft Edge
@@ -66,7 +60,7 @@ PS C:\> .\MDEtesterWP.ps1 -Category LegalLiability
 PS C:\> .\MDEtesterWP.ps1 -Category Leisure
 ```
 > [!Note] 
-> In this MDE Tester script, WEC will be tested against high-level categories such as 'AdultContent,' 'HighBandwidth,' 'LegalLiability,' and 'Leisure.' Please note that some specific categories might not be covered, and the 'Uncategorized' category is not included in this script.
+> In this MDE Tester script, WEC will be tested against high-level categories such as 'HighBandwidth,' 'LegalLiability,' and 'Leisure.' Please note that some specific categories might not be covered, and the 'Uncategorized' category is not included in this script.
 
 ### LOG
 After you run `MDEtesterWP.ps1`, all logs will be created by the script and available following the path - `C:\MDE-tester`.
