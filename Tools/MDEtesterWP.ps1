@@ -40,7 +40,7 @@ Write-Host "                              Version : 2.0.1"
 
 # : MDE Tester introduction 
 $intro = @"
-MDE Tester is designed to help testing various features in Microsoft Defender for Endpoint.
+MDE Tester is designed to help testing following features in Microsoft Defender for Endpoint.
 'MDEtester.ps1' is intended to assist in testing the following features: 
   - Microsoft Defender SmartScreen
   - Microsoft Defender Exploit Guard, Network Protection
@@ -49,6 +49,7 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 
 # Usage : Test full features
 PS C:\> .\MDEtester.ps1 -Path <CSV File path> -Category <Category>
+-Category : HighBandwidth, LegalLiability, Leisure
 "@
 
 Write-Host "`n"
@@ -116,8 +117,8 @@ if ($SmartScreenEnabledPathExists) {
     Write-Host "In order to make sure Edge Defender SmartScreen is enabled, please check Edge browser settings.`n" -ForegroundColor Yellow
 }
 
-# AV version
-# Get Windows Defender Real-Time Protection status
+# Microsoft Defender Antivirus - Version
+# Get Microsoft Defender Real-Time Protection status
 $defenderStatus = Get-MpComputerStatus
 
 # Display the Real-Time Protection status
@@ -136,98 +137,115 @@ try {
     $RealTimeProtectionDisabled = $true
 }
 
-Write-Host ""
+Write-Host "" 
 
 # Check if any of the conditions are met to stop the script
 if ($MDENotRunning) {
     Write-Host "[Action] Onboarding Microsoft Defender for Endpoint on the device is a prerequisite to run this script."
     Write-Host "--- END ---"
+    Stop-Transcript
+    $Host.UI.RawUI.ForegroundColor = $originalOutput
     Exit
 } elseif ($NPDisabled -and $SmartScreenDisabled) {
     Write-Host "[Action] Enabling Network Protection or SmartScreen is a prerequisite to run this script."
     Write-Host "--- END ---"
+    Stop-Transcript
+    $Host.UI.RawUI.ForegroundColor = $originalOutput
     Exit
 } elseif ($RealTimeProtectionDisabled) {
     Write-Host "[Action] Enabling Defender Antivirus - Real-Time Protection is a prerequisite to run this script."
     Write-Host "--- END ---"
+    Stop-Transcript
+    $Host.UI.RawUI.ForegroundColor = $originalOutput
     Exit
 }
 
 Write-Host "+=====================================================================================================+`n"
 
-#ASR Network Protection : Test
-Write-Host "=> MDE, Network Protection : Test in Chrome "
-
-function Process-Url {
+# Helper functions
+function Invoke-BrowserUrl {
     param (
-        [string]$url,
-        [string]$message
+        [Parameter(Mandatory)]
+        [ValidateSet('Edge','Chrome')]
+        [string]$Browser,
+
+        [Parameter(Mandatory)]
+        [string]$Url,
+
+        [Parameter(Mandatory)]
+        [string]$Message
     )
 
-    Write-Host "$message  ...Processing in Chrome"
+    $exe = if ($Browser -eq 'Edge') { 'msedge.exe' } else { 'chrome.exe' }
+
+    Write-Host "$Message  ...Processing in $Browser"
 
     try {
-        # Open Chrome process for the current URL and wait for it to exit
-        Start-Process chrome.exe -ArgumentList $url 
-
-        Write-Host "[Success] $url" -ForegroundColor Green
+        Start-Process $exe -ArgumentList $Url -ErrorAction Stop
+        Write-Host "[Success] $Url" -ForegroundColor Green
     } catch {
-        # Handle exceptions (display error message) - Mostly Chrome was not installed 
-        Write-Host "[Error] occurred while processing $url in Chrome" -ForegroundColor Red
+        Write-Host "[Error] occurred while processing $Url in $Browser" -ForegroundColor Red
+        if ($_.Exception.Message) {
+            Write-Host "Error Details: $($_.Exception.Message)" -ForegroundColor Red
+        }
     }
     Write-Host "-------------------------------------------------------------------------------------------------------"
 }
 
+function Ensure-BrowserStarted {
+    param (
+        [Parameter(Mandatory)]
+        [ValidateSet('Edge','Chrome')]
+        [string]$Browser
+    )
+
+    $procName = if ($Browser -eq 'Edge') { 'msedge' } else { 'chrome' }
+
+    if (-not (Get-Process -Name $procName -ErrorAction SilentlyContinue)) {
+        try {
+            Start-Process $procName
+            Start-Sleep -Seconds 2
+        } catch {
+            Write-Host "[Warning] Failed to start ${Browser}: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
+    }
+}
+
+function Invoke-WcfUrl {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Url,
+
+        [Parameter(Mandatory)]
+        [string]$Message
+    )
+
+    Invoke-BrowserUrl -Browser 'Edge' -Url $Url -Message $Message
+    Invoke-BrowserUrl -Browser 'Chrome' -Url $Url -Message $Message
+}
+
+# Network Protection
+Write-Host "=> MDE, Network Protection : Test in Chrome "
+
 # Network Protection URL
-$url = "https://smartscreentestratings2.net/"
-Process-Url -url $url -message "[1] Network Protection URL"
+Invoke-BrowserUrl -Browser 'Chrome' -Url 'https://smartscreentestratings2.net/' -Message "[1] Network Protection URL"
 
 # Network Protection C2C URL
-$url = "https://commandcontrol.smartscreentestratings.com"
-Process-Url -url $url -message "[2] Network Protection C2C URL"
+Invoke-BrowserUrl -Browser 'Chrome' -Url 'https://commandcontrol.smartscreentestratings.com' -Message "[2] Network Protection C2C URL"
+# wait 10seconds
+Start-Sleep -Seconds 10
 
 Write-Host ""
 
 # Microsoft Defender SmartScreen : Test
 Write-Host "=> Microsoft Defender SmartScreen : Test in Edge"
 
-# Function to process Microsoft Defender SmartScreen URLs and display the result
-function Process-Url {
-    param (
-        [string]$url,
-        [string]$message
-    )
-
-    Write-Host "$message  ...Processing in Edge"
-
-    try {
-        # Open Edge process for the current URL
-        $edgeProcess = Start-Process msedge.exe -ArgumentList $url -PassThru
-       
-        # Display the specific message based on the keyword
-        Write-Host "[Success] $url" -ForegroundColor Green
-    } catch {
-        # Handle exceptions (display error message)
-        Write-Host "[Error] occurred while processing $url in Edge" -ForegroundColor Red
-    }
-    Write-Host "-------------------------------------------------------------------------------------------------------"
-}
-
-# Phishing URL
-$url = "https://demo.smartscreen.msft.net/phishingdemo.html"
-Process-Url -url $url -message "[3] Phishing URL"
-
-# Malware URL
-$url = "https://demo.smartscreen.msft.net/other/malware.html"
-Process-Url -url $url -message "[4] Malware URL"
-
-# Untrusted URL
-$url = "https://demo.smartscreen.msft.net/download/malwaredemo/freevideo.exe"
-Process-Url -url $url -message "[5] Untrusted URL"
-
-# Exploit URL
-$url = "https://demo.smartscreen.msft.net/other/exploit.html"
-Process-Url -url $url -message "[6] Exploit URL"
+Invoke-BrowserUrl -Browser 'Edge' -Url 'https://demo.smartscreen.msft.net/phishingdemo.html' -Message "[3] Phishing URL"
+Invoke-BrowserUrl -Browser 'Edge' -Url 'https://demo.smartscreen.msft.net/other/malware.html' -Message "[4] Malware URL"
+Invoke-BrowserUrl -Browser 'Edge' -Url 'https://demo.smartscreen.msft.net/download/malwaredemo/freevideo.exe' -Message "[5] Untrusted URL"
+Invoke-BrowserUrl -Browser 'Edge' -Url 'https://demo.smartscreen.msft.net/other/exploit.html' -Message "[6] Exploit URL"
+# wait 10seconds
+Start-Sleep -Seconds 10
 
 Write-Host ""
 
@@ -245,55 +263,13 @@ if (-not $Path) {
         # Read URLs from the CSV file
         $urlList = Import-Csv $Path | Select-Object -ExpandProperty IndicatorValue
 
-        # Check if the Edge browser process is already running
-        $edgeProcess = Get-Process -Name msedge -ErrorAction SilentlyContinue
+        Ensure-BrowserStarted -Browser 'Edge'
+        Ensure-BrowserStarted -Browser 'Chrome'
 
-        # Check if the Chrome browser process is already running
-        $chromeProcess = Get-Process -Name chrome -ErrorAction SilentlyContinue
-
-        # Start Edge browser if not running
-        if ($null -eq $edgeProcess) {
-            Start-Process msedge
-            Start-Sleep -Seconds 2  # Wait for the browser to start
-        }
-
-        # Start Chrome browser if not running
-        if ($null -eq $chromeProcess) {
-            try {
-                Start-Process chrome  
-                Start-Sleep -Seconds 3  # Wait for the browser to start
-            } catch {
-                # Handle exceptions (display error message)
-                # Write-Host "[Error] No chrome process found to start" -ForegroundColor Red
-            }   
-        }
-
-        # Open the Edge browser for each URL
         foreach ($url in $urlList) {
-            Write-Host "[$counter] URL Indicators ...Processing in Edge"
-
-            # Access the URL in Edge
-            Start-Process msedge $url
-            Start-Sleep -Seconds 2  # Wait a bit between accessing each URL
-
-            # Display a success message with the counter incremented
-            Write-Host "[Success] $url" -ForegroundColor Green
-            Write-Host "-------------------------------------------------------------------------------------------------------"
-            try {
-                Write-Host "[$counter] URL Indicators ...Processing in Chrome"
-
-                # Access the URL in Chrome
-                Start-Process chrome $url
-                Start-Sleep -Seconds 3  # Wait a bit between accessing each URL
-
-                # Display a success message with the counter incremented
-                Write-Host "[Success] $url" -ForegroundColor Green
-                Write-Host "-------------------------------------------------------------------------------------------------------"
-            } catch {
-                # Handle exceptions (display error message)
-                Write-Host "[Error] occurred while processing $url in Chrome" -ForegroundColor Red
-                Write-Host "-------------------------------------------------------------------------------------------------------"
-            }
+            $message = "[$counter] URL Indicators"
+            Invoke-BrowserUrl -Browser 'Edge' -Url $url -Message $message
+            Invoke-BrowserUrl -Browser 'Chrome' -Url $url -Message $message
             $counter++
         }
     } else {
@@ -301,53 +277,13 @@ if (-not $Path) {
     }
 }
 
+# wait 10seconds
+Start-Sleep -Seconds 10
+
 Write-Host ""
 
 # MDE WCF : Test
 Write-Host "=> MDE Web Content Filtering : Test in Edge & Chrome"
-
-function Invoke-UrlProcessing {
-    param (
-        [string]$url,
-        [string]$message
-    )
-
-    Write-Host "$message  ...Processing in Edge"
-
-    try {
-        # Open Edge process for the current URL and wait for it to exit
-        Start-Process "msedge.exe" -ArgumentList $url -Wait -ErrorAction Stop
-
-        Write-Host "[Success] $url" -ForegroundColor Green
-    } catch {
-        Write-Host "[Error] occurred while processing $url in Edge" -ForegroundColor Red
-        Write-Host "Error Details: $($_.Exception.Message)" -ForegroundColor Red
-    }
-    Write-Host "-------------------------------------------------------------------------------------------------------"
-
-    Write-Host "$message  ...Processing in Chrome"
-
-    try {
-        # Open Chrome process for the current URL and wait for it to exit
-        Start-Process "chrome.exe" -ArgumentList $url -Wait -ErrorAction Stop
-
-        Write-Host "[Success] $url" -ForegroundColor Green
-    } catch {
-        Write-Host "[Error] occurred while processing $url in Chrome" -ForegroundColor Red
-    }
-    Write-Host "-------------------------------------------------------------------------------------------------------"
-}
-
-# Gambling - https://onlinesportsbetting.pro/
-# Violence - https://www.americanviolence.org/
-# Pornography - https://www.qorno.com/
-# Nudity - https://www.aznude.com/browse/tags/imgs/fullfrontal/1.html
-$AdultContent = @(
-    "https://onlinesportsbetting.pro/",
-    "https://www.americanviolence.org/",
-    "https://www.qorno.com/",
-    "https://www.aznude.com/browse/tags/imgs/fullfrontal/1.html"
-)
 
 # Streaming Media & Downloads - https://www.netflix.com/
 # Streaming Media & Downloads - https://www.hulu.com/welcome
@@ -388,24 +324,19 @@ if ($MyInvocation.BoundParameters['Category']) {
 
     # Check if the category is valid
     switch ($Category) {
-        "AdultContent" {
-            foreach ($url in $AdultContent) {
-                Invoke-UrlProcessing -url $url -message "Adult Content URL"
-            }
-        }
         "HighBandwidth" {
             foreach ($url in $HighBandwidth) {
-                Invoke-UrlProcessing -url $url -message "High Bandwidth URL"
+                Invoke-WcfUrl -Url $url -Message "High Bandwidth URL"
             }
         }
         "LegalLiability" {
             foreach ($url in $LegalLiability) {
-                Invoke-UrlProcessing -url $url -message "Legal Liability URL"
+                Invoke-WcfUrl -Url $url -Message "Legal Liability URL"
             }
         }
         "Leisure" {
             foreach ($url in $Leisure) {
-                Invoke-UrlProcessing -url $url -message "Legal Liability URL"
+                Invoke-WcfUrl -Url $url -Message "Leisure URL"
             }
         }
         default {
@@ -414,34 +345,8 @@ if ($MyInvocation.BoundParameters['Category']) {
     }
 } else {
     Write-Host "[No Test] : Category parameter is null or empty. Please specify a category using -Category parameter." -ForegroundColor Yellow
-    Write-Host "[No Test] : 'AdultContent', 'HighBandwidth', 'LegalLiability', 'Leisure'" -ForegroundColor Yellow
+    Write-Host "[No Test] : 'HighBandwidth', 'LegalLiability', 'Leisure'" -ForegroundColor Yellow
 }
-
-Write-Host ""
-
-$LearningKijo = @"
-+====================================================================================================================================================================+
-| In order to check the detailed logs, you can track all activities in Advanced Hunting, Microsoft Defender XDR.                                                     |
-| Here are the out-of-the-box KQL queries for threat hunting.                                                                                                        |
-|                                                                                                                                                                    |
-| [1] MDE URL Indicators "Block"                                                                                                                                     |
-| https://github.com/LearningKijo/KQL/blob/main/KQL-XDR-Hunting/Endpoint-Microsoft-Defender-for-Endpoint/MDE-Query-Repository/01-MDE-URL-Indicators-Block.md         |
-|                                                                                                                                                                    |
-| [2] MDE URL Indicators "Warn"                                                                                                                                      |
-| https://github.com/LearningKijo/KQL/blob/main/KQL-XDR-Hunting/Endpoint-Microsoft-Defender-for-Endpoint/MDE-Query-Repository/02-MDE-URL-Indicators-Bypass.md        |
-|                                                                                                                                                                    |
-| [3] MDE Network Protection                                                                                                                                         |
-| https://github.com/LearningKijo/KQL/blob/main/KQL-XDR-Hunting/Endpoint-Microsoft-Defender-for-Endpoint/MDE-Query-Repository/03-MDE-NetworkProtection-Detection.md  |
-|                                                                                                                                                                    |
-| [4] Microsoft Defender SmartScreen                                                                                                                                 |
-| https://github.com/LearningKijo/KQL/blob/main/KQL-XDR-Hunting/Endpoint-Microsoft-Defender-for-Endpoint/MDE-Query-Repository/04-SS-DefenderSmartScreen-Detection.md |
-|                                                                                                                                                                    |
-|                                                                          ---- END ----                                                                             |
-| Thank you, Kijo Ninja                                                                                                                                              |
-+====================================================================================================================================================================+
-"@
-
-Write-Host $LearningKijo
 
 Write-Host ""
 
