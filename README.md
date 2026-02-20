@@ -4,20 +4,7 @@ MDE Tester is designed to help testing various features in Microsoft Defender fo
 
 |  PS script   | Testing features |
 |:-------------|:-----------------|
-|`MDEtesterTP.ps1` | 1. Microsoft Defender for Endpoint, Tamper Protection |
 |`MDEtesterWP.ps1` | 1. Microsoft Defender SmartScreen <br> 2. Microsoft Defender Exploit Guard, Network Protection <br> 3. Microsoft Defender for Endpoint, URL Indicators <br> 4. Microsoft Defender for Endpoint, Web Content Filtering |
-
-## MDEtesterTP.ps1
-### Prerequisites
--  `MDEtesterTP.ps1` helps confirm the status of Microsoft Defender for Endpoint, Tamper Protection. 
- However, to test AV tampering in `MDEtesterTP.ps1`, enabling Tamper Protection is required.
-- Run  `MDEtesterTP.ps1` script as Administrator.
-
-### Usage
-
-```
-PS C:\> .\MDEtesterTP.ps1 
-```
 
 ### How it looks like
 ![image](https://github.com/LearningKijo/MDEtester/assets/120234772/a1f663e0-09fe-4fd1-a409-d76cece7c1a1)
@@ -54,9 +41,9 @@ PS C:\> .\MDEtesterWP.ps1 -Path <CSV File path> -Category <category>
 |    Features  | Test 1 | Test 2 | Test 3 | Test 4 |
 |:-----|--------|--------|-------|--------|
 |  Microsoft Defender SmartScreen  | 〇 | 〇 | 〇 | 〇 |
-|  Network Protection                       | 〇 | 〇 | 〇 | 〇 |
-|  MDE URL Indicators                       | × | 〇 | × | 〇 |
-|  MDE Web Content Filtering           | × | × | 〇 | 〇 |
+|  Network Protection              | 〇 | 〇 | 〇 | 〇 |
+|  MDE URL Indicators              | × | 〇 | × | 〇 |
+|  MDE Web Content Filtering       | × | × | 〇 | 〇 |
 
 > [!Important]
 > **Signing**
@@ -74,7 +61,6 @@ PS C:\> .\MDEtesterWP.ps1 -Path <CSV File path> -Category <category>
 -Category <String> :  This is an optional parameter. Please select a category you want to test and it is used for testing MDE WCF.
 
 Here are available categories :
-PS C:\> .\MDEtesterWP.ps1 -Category AdultContent
 PS C:\> .\MDEtesterWP.ps1 -Category HighBandwidth
 PS C:\> .\MDEtesterWP.ps1 -Category LegalLiability
 PS C:\> .\MDEtesterWP.ps1 -Category Leisure
